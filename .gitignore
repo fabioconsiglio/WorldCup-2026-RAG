@@ -10,5 +10,8 @@ local_db/
 __pycache__/
 *.pyc
 
+# ETL state file (varies per machine)
+etl_state.json
+
 # Backups (optional — comment out if you want to track them)
 database_backup.json

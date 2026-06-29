@@ -1,0 +1,38 @@
+name: Daily ETL — World Cup Data Sync
+
+on:
+  schedule:
+    # Runs at 08:07 UTC every day (off-peak to avoid rate-limiting contention)
+    - cron: "7 8 * * *"
+  workflow_dispatch:  # allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+
+      - name: Run incremental ETL
+        env:
+          FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
+        run: python fetch_wc.py
+
+      # Persist the sync-state file and any DB changes across runs.
+      # Uses the cache action because the repo itself is ephemeral.
+      - name: Cache ETL state
+        uses: actions/cache@v4
+        with:
+          path: |
+            etl_state.json
+            local_db/
+          key: wc-data-${{ github.run_id }}
+          restore-keys: wc-data-

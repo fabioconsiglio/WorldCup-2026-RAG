@@ -5,8 +5,8 @@ from rag_chromadb.db import (
     build_rag_prompt,
     generate_answer,
     get_collection,
-    get_embedding,
     query_collection,
+    upsert_documents,
 )
 
 
@@ -22,11 +22,7 @@ def ingest_demo_docs(collection_name: str = DEFAULT_COLLECTION) -> None:
 
     print(f"Ingesting {len(documents)} demo documents into '{collection_name}'...")
     for i, doc in enumerate(documents):
-        collection.upsert(
-            ids=[f"demo_doc_{i}"],
-            embeddings=[get_embedding(doc)],
-            documents=[doc],
-        )
+        upsert_documents(collection, [f"demo_doc_{i}"], [doc])
     print("Done.\n")
 
 

@@ -9,7 +9,7 @@ from rag_chromadb.db import (
     build_rag_prompt,
     generate_answer,
     get_collection,
-    get_embedding,
+    query_collection,
 )
 
 # ---------------------------------------------------------------------------
@@ -42,16 +42,9 @@ if user_query := st.chat_input("Ask a question about your documents..."):
 
     # Retrieve
     collection = get_collection(WC_COLLECTION)
-    query_embedding = get_embedding(user_query)
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=DEFAULT_N_RESULTS,
+    context_chunks = query_collection(
+        collection, user_query, n_results=DEFAULT_N_RESULTS
     )
-
-    if results.get("documents") and results["documents"][0]:
-        context_chunks = results["documents"][0]
-    else:
-        context_chunks = []
 
     # Generate
     prompt = build_rag_prompt(user_query, context_chunks)

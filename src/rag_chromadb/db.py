@@ -7,9 +7,10 @@ embedding generation, and common RAG operations.
 from __future__ import annotations
 
 from functools import cache
-from typing import Any
+from typing import Any, cast
 
 import chromadb
+from chromadb.api import ClientAPI
 from openai import OpenAI
 
 from rag_chromadb.config import (
@@ -33,7 +34,7 @@ def get_openai_client() -> OpenAI:
 
 
 @cache
-def get_chroma_client() -> chromadb.PersistentClient:
+def get_chroma_client() -> ClientAPI:
     """Return a cached ChromaDB persistent client."""
     return chromadb.PersistentClient(path=CHROMA_DB_PATH)
 
@@ -82,7 +83,7 @@ def query_collection(
     """
     query_embedding = get_embedding(query_text)
     results = collection.query(
-        query_embeddings=[query_embedding],
+        query_embeddings=cast(Any, [query_embedding]),
         n_results=n_results,
     )
 
@@ -129,7 +130,7 @@ def generate_answer(
         )
         if stream:
             return response
-        return response.choices[0].message.content
+        return cast(Any, response).choices[0].message.content
     except Exception as exc:
         print(f"LLM call failed: {exc}")
         return None
@@ -150,7 +151,7 @@ def upsert_documents(
     embeddings = [get_embedding(doc) for doc in documents]
     collection.upsert(
         ids=ids,
-        embeddings=embeddings,
+        embeddings=cast(Any, embeddings),
         documents=documents,
-        metadatas=metadatas,
+        metadatas=cast(Any, metadatas),
     )

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+from typing import Any, cast
 
 from rag_chromadb.config import WC_COLLECTION
 from rag_chromadb.db import get_collection
@@ -17,7 +18,9 @@ def export_collection(
     print(f"Fetching data from '{collection_name}'...")
     collection = get_collection(collection_name)
 
-    all_data = collection.get(include=["documents", "metadatas", "embeddings"])
+    # ponytail: chromadb's GetResult TypedDict is awkward for JSON shaping;
+    # treat it as a plain dict so the None/invariance stubs don't get in the way.
+    all_data = cast(dict[str, Any], collection.get(include=["documents", "metadatas", "embeddings"]))
 
     # Convert embeddings to plain floats for JSON serialization
     safe_embeddings: list[list[float] | None] = []

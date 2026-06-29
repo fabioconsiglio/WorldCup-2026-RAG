@@ -100,11 +100,11 @@ class Match(BaseModel):
     def winner(self) -> str:
         if not self.is_finished:
             return "TBD"
-        if self.home_score == self.away_score:  # type: ignore[operator]
+        if self.home_score == self.away_score:
             return "Draw"
         home = self.home_score or 0
         away = self.away_score or 0
-        return self.home_name if home > away else self.away_name  # type: ignore[return-value]
+        return self.home_name if home > away else self.away_name
 
     @property
     def summary(self) -> str:

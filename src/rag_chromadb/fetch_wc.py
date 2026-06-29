@@ -18,7 +18,7 @@ from rag_chromadb.config import (
     FOOTBALL_DATA_API_URL,
     WC_COLLECTION,
 )
-from rag_chromadb.db import get_collection, get_embedding
+from rag_chromadb.db import get_collection, upsert_documents
 from rag_chromadb.schemas import Match, MatchResponse, SyncState
 
 # ---------------------------------------------------------------------------
@@ -123,10 +123,10 @@ def sync_matches(matches: list[Match]) -> int:
     collection = get_collection(WC_COLLECTION)
 
     for m in matches:
-        collection.upsert(
-            ids=[f"wc_match_{m.id}"],
-            embeddings=[get_embedding(m.summary)],
-            documents=[m.summary],
+        upsert_documents(
+            collection,
+            [f"wc_match_{m.id}"],
+            [m.summary],
             metadatas=[m.metadata],
         )
 

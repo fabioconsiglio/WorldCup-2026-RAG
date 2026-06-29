@@ -1,0 +1,14 @@
+# Environment
+.env
+.venv
+
+
+# ChromaDB local data
+local_db/
+
+# Python
+__pycache__/
+*.pyc
+
+# Backups (optional — comment out if you want to track them)
+database_backup.json

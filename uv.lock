@@ -2280,6 +2280,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "python-dotenv" },
     { name = "requests" },
+    { name = "ruff" },
     { name = "streamlit" },
 ]
 
@@ -2299,6 +2300,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "requests", specifier = ">=2.34.2" },
+    { name = "ruff", specifier = ">=0.15.20" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "streamlit", specifier = ">=1.58.0" },
 ]

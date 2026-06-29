@@ -2,10 +2,10 @@
 
 from config import DEFAULT_COLLECTION, DEFAULT_N_RESULTS
 from db import (
+    build_rag_prompt,
     generate_answer,
     get_collection,
     get_embedding,
-    build_rag_prompt,
     query_collection,
 )
 

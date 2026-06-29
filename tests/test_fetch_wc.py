@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fetch_wc import filter_changed
 from schemas import Match, SyncState
@@ -25,13 +25,13 @@ class TestIncrementalFilter:
         assert len(skipped) == 0
 
     def test_skips_unchanged_matches(self) -> None:
-        t0 = datetime(2026, 6, 1, tzinfo=timezone.utc)
-        t1 = datetime(2026, 6, 10, tzinfo=timezone.utc)
+        t0 = datetime(2026, 6, 1, tzinfo=UTC)
+        t1 = datetime(2026, 6, 10, tzinfo=UTC)
         state = SyncState(last_sync=t1)
         matches = [
             sample_match(1, t0),  # older → skip
             sample_match(2, t1),  # equal → skip (not strictly after)
-            sample_match(3, datetime(2026, 6, 15, tzinfo=timezone.utc)),  # newer
+            sample_match(3, datetime(2026, 6, 15, tzinfo=UTC)),  # newer
             sample_match(4, None),  # no timestamp → process (safety)
         ]
         changed, skipped = filter_changed(matches, state)
@@ -40,11 +40,11 @@ class TestIncrementalFilter:
         assert {m.id for m in skipped} == {1, 2}
 
     def test_all_changed(self) -> None:
-        t0 = datetime(2026, 6, 1, tzinfo=timezone.utc)
+        t0 = datetime(2026, 6, 1, tzinfo=UTC)
         state = SyncState(last_sync=t0)
         matches = [
-            sample_match(1, datetime(2026, 6, 5, tzinfo=timezone.utc)),
-            sample_match(2, datetime(2026, 6, 6, tzinfo=timezone.utc)),
+            sample_match(1, datetime(2026, 6, 5, tzinfo=UTC)),
+            sample_match(2, datetime(2026, 6, 6, tzinfo=UTC)),
         ]
         changed, skipped = filter_changed(matches, state)
         assert len(changed) == 2

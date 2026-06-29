@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
-from pydantic import BaseModel, Field, field_validator, model_validator
-
+from pydantic import BaseModel, field_validator
 
 # ---------------------------------------------------------------------------
 # Football-data.org API response models
@@ -103,7 +101,9 @@ class Match(BaseModel):
             return "TBD"
         if self.home_score == self.away_score:  # type: ignore[operator]
             return "Draw"
-        return self.home_name if (self.home_score or 0) > (self.away_score or 0) else self.away_name  # type: ignore[operator]
+        home = self.home_score or 0
+        away = self.away_score or 0
+        return self.home_name if home > away else self.away_name  # type: ignore[return-value]
 
     @property
     def summary(self) -> str:

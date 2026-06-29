@@ -14,7 +14,7 @@ OPENAI_BASE_URL: str = os.getenv("LM_STUDIO_URL", "http://localhost:1234/v1")
 OPENAI_API_KEY: str = os.getenv("LM_STUDIO_API_KEY", "lm-studio")
 
 EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "nomic-embed-text-v1.5")
-DEFAULT_LLM_MODEL: str = os.getenv("DEFAULT_LLM_MODEL", "mistral-7b-instruct")
+DEFAULT_LLM_MODEL: str = os.getenv("DEFAULT_LLM_MODEL", "qwen3.5-2b")
 
 # ---------------------------------------------------------------------------
 # ChromaDB settings

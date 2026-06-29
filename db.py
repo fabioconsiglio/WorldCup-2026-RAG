@@ -21,7 +21,6 @@ from config import (
     OPENAI_BASE_URL,
 )
 
-
 # ---------------------------------------------------------------------------
 # Lazy-singleton clients (cached so they're created only once)
 # ---------------------------------------------------------------------------

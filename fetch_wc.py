@@ -21,7 +21,6 @@ from config import (
 from db import get_collection, get_embedding
 from schemas import Match, MatchResponse, SyncState
 
-
 # ---------------------------------------------------------------------------
 # State (incremental ETL)
 # ---------------------------------------------------------------------------
@@ -165,7 +164,10 @@ def main() -> None:
             (m.lastUpdated for m in changed if m.lastUpdated is not None),
             default=None,
         )
-        state = SyncState(last_sync=new_watermark, match_count=state.match_count + count)
+        state = SyncState(
+            last_sync=new_watermark,
+            match_count=state.match_count + count,
+        )
         save_sync_state(state)
         print(f"Sync state saved (watermark: {state.last_sync}).")
 

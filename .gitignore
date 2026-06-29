@@ -15,3 +15,10 @@ etl_state.json
 
 # Backups (optional — comment out if you want to track them)
 database_backup.json
+
+# claude code 
+claude/ 
+
+# ruff_cache
+ruff_cache/
+rag_chromadb.egg-info/

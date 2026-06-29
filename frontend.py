@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import streamlit as st
 
-from config import DEFAULT_COLLECTION, DEFAULT_N_RESULTS, WC_COLLECTION
-from db import generate_answer, get_collection, get_embedding, build_rag_prompt
-
+from config import DEFAULT_N_RESULTS, WC_COLLECTION
+from db import build_rag_prompt, generate_answer, get_collection, get_embedding
 
 # ---------------------------------------------------------------------------
 # Page setup

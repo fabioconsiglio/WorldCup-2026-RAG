@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-from db import build_rag_prompt, get_collection, query_collection
+from db import build_rag_prompt, query_collection
 
 
 class TestBuildRagPrompt:

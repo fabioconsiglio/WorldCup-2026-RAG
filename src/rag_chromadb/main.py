@@ -1,7 +1,7 @@
 """CLI demo: ingest sample documents and run a RAG query against them."""
 
-from config import DEFAULT_COLLECTION, DEFAULT_N_RESULTS
-from db import (
+from rag_chromadb.config import DEFAULT_COLLECTION, DEFAULT_N_RESULTS
+from rag_chromadb.db import (
     build_rag_prompt,
     generate_answer,
     get_collection,
@@ -64,17 +64,20 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description="Local RAG pipeline demo")
     parser.add_argument(
-        "--query", "-q",
+        "--query",
+        "-q",
         default="Tell me about Germany vs Brazil in the World Cup.",
         help="The question to ask (default: a sample question).",
     )
     parser.add_argument(
-        "--collection", "-c",
+        "--collection",
+        "-c",
         default=DEFAULT_COLLECTION,
         help=f"ChromaDB collection name (default: {DEFAULT_COLLECTION}).",
     )
     parser.add_argument(
-        "--model", "-m",
+        "--model",
+        "-m",
         default=None,
         help="LLM model override (default: value from config / env).",
     )

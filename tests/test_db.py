@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-from db import build_rag_prompt, query_collection
+from rag_chromadb.db import build_rag_prompt, query_collection
 
 
 class TestBuildRagPrompt:
@@ -21,7 +21,7 @@ class TestBuildRagPrompt:
 
 
 class TestQueryCollection:
-    @patch("db.get_embedding")
+    @patch("rag_chromadb.db.get_embedding")
     def test_returns_document_texts(self, mock_embed: MagicMock) -> None:
         mock_embed.return_value = [0.1, 0.2]
         col = MagicMock()
@@ -30,7 +30,7 @@ class TestQueryCollection:
         result = query_collection(col, "any query", n_results=2)
         assert result == ["chunk A", "chunk B"]
 
-    @patch("db.get_embedding")
+    @patch("rag_chromadb.db.get_embedding")
     def test_empty_results_returns_empty_list(self, mock_embed: MagicMock) -> None:
         mock_embed.return_value = [0.1, 0.2]
         col = MagicMock()
@@ -39,7 +39,7 @@ class TestQueryCollection:
         result = query_collection(col, "any query")
         assert result == []
 
-    @patch("db.get_embedding")
+    @patch("rag_chromadb.db.get_embedding")
     def test_no_documents_key_returns_empty_list(self, mock_embed: MagicMock) -> None:
         mock_embed.return_value = [0.1, 0.2]
         col = MagicMock()

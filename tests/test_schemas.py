@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from schemas import Match, MatchResponse, SyncState
+from rag_chromadb.schemas import Match, MatchResponse, SyncState
 
 
 class TestMatch:
@@ -21,15 +21,17 @@ class TestMatch:
             Match.model_validate({})
 
     def test_finished_match_properties(self) -> None:
-        m = Match.model_validate({
-            "id": 42,
-            "utcDate": "2026-06-15T20:00:00Z",
-            "status": "FINISHED",
-            "stage": "GROUP_STAGE",
-            "homeTeam": {"name": "Germany"},
-            "awayTeam": {"name": "Brazil"},
-            "score": {"fullTime": {"home": 3, "away": 1}},
-        })
+        m = Match.model_validate(
+            {
+                "id": 42,
+                "utcDate": "2026-06-15T20:00:00Z",
+                "status": "FINISHED",
+                "stage": "GROUP_STAGE",
+                "homeTeam": {"name": "Germany"},
+                "awayTeam": {"name": "Brazil"},
+                "score": {"fullTime": {"home": 3, "away": 1}},
+            }
+        )
         assert m.is_finished is True
         assert m.winner == "Germany"
         assert m.home_score == 3
@@ -39,26 +41,30 @@ class TestMatch:
         assert "Germany 3 - 1 Brazil" in m.result_string
 
     def test_scheduled_match_not_finished(self) -> None:
-        m = Match.model_validate({
-            "id": 7,
-            "status": "SCHEDULED",
-            "homeTeam": {"name": "Argentina"},
-            "awayTeam": {"name": "France"},
-        })
+        m = Match.model_validate(
+            {
+                "id": 7,
+                "status": "SCHEDULED",
+                "homeTeam": {"name": "Argentina"},
+                "awayTeam": {"name": "France"},
+            }
+        )
         assert m.is_finished is False
         assert m.winner == "TBD"
 
     def test_summary_contains_match_info(self) -> None:
-        m = Match.model_validate({
-            "id": 10,
-            "utcDate": "2026-07-01T18:00:00Z",
-            "status": "FINISHED",
-            "stage": "FINAL",
-            "venue": "MetLife Stadium",
-            "homeTeam": {"name": "Spain"},
-            "awayTeam": {"name": "England"},
-            "score": {"fullTime": {"home": 2, "away": 1}},
-        })
+        m = Match.model_validate(
+            {
+                "id": 10,
+                "utcDate": "2026-07-01T18:00:00Z",
+                "status": "FINISHED",
+                "stage": "FINAL",
+                "venue": "MetLife Stadium",
+                "homeTeam": {"name": "Spain"},
+                "awayTeam": {"name": "England"},
+                "score": {"fullTime": {"home": 2, "away": 1}},
+            }
+        )
         summary = m.summary
         assert "World Cup" in summary
         assert "Final" in summary
@@ -67,13 +73,15 @@ class TestMatch:
         assert "MetLife Stadium" in summary
 
     def test_metadata_keys(self) -> None:
-        m = Match.model_validate({
-            "id": 1,
-            "status": "FINISHED",
-            "score": {"fullTime": {"home": 1, "away": 0}},
-            "homeTeam": {"name": "A"},
-            "awayTeam": {"name": "B"},
-        })
+        m = Match.model_validate(
+            {
+                "id": 1,
+                "status": "FINISHED",
+                "score": {"fullTime": {"home": 1, "away": 0}},
+                "homeTeam": {"name": "A"},
+                "awayTeam": {"name": "B"},
+            }
+        )
         meta = m.metadata
         assert meta["type"] == "soccer_match"
         assert meta["winner"] == "A"
@@ -86,14 +94,20 @@ class TestMatchResponse:
         assert r.matches == []
 
     def test_multiple_matches(self) -> None:
-        r = MatchResponse.model_validate({
-            "matches": [
-                {"id": 1, "status": "SCHEDULED"},
-                {"id": 2, "status": "FINISHED",
-                 "score": {"fullTime": {"home": 2, "away": 2}},
-                 "homeTeam": {"name": "X"}, "awayTeam": {"name": "Y"}},
-            ]
-        })
+        r = MatchResponse.model_validate(
+            {
+                "matches": [
+                    {"id": 1, "status": "SCHEDULED"},
+                    {
+                        "id": 2,
+                        "status": "FINISHED",
+                        "score": {"fullTime": {"home": 2, "away": 2}},
+                        "homeTeam": {"name": "X"},
+                        "awayTeam": {"name": "Y"},
+                    },
+                ]
+            }
+        )
         assert len(r.matches) == 2
         assert r.matches[0].id == 1
         assert r.matches[1].winner == "Draw"

@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 import sys
 
-from config import WC_COLLECTION
-from db import get_collection
+from rag_chromadb.config import WC_COLLECTION
+from rag_chromadb.db import get_collection
 
 
 def export_collection(
@@ -52,12 +52,14 @@ def main() -> None:
         description="Export a ChromaDB collection to JSON.",
     )
     parser.add_argument(
-        "--collection", "-c",
+        "--collection",
+        "-c",
         default=WC_COLLECTION,
         help=f"Collection name (default: {WC_COLLECTION}).",
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         default="database_backup.json",
         help="Output JSON file path (default: database_backup.json).",
     )

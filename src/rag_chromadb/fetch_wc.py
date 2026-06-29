@@ -12,18 +12,19 @@ import sys
 import requests
 from pydantic import ValidationError
 
-from config import (
+from rag_chromadb.config import (
     ETL_STATE_FILE,
     FOOTBALL_DATA_API_TOKEN,
     FOOTBALL_DATA_API_URL,
     WC_COLLECTION,
 )
-from db import get_collection, get_embedding
-from schemas import Match, MatchResponse, SyncState
+from rag_chromadb.db import get_collection, get_embedding
+from rag_chromadb.schemas import Match, MatchResponse, SyncState
 
 # ---------------------------------------------------------------------------
 # State (incremental ETL)
 # ---------------------------------------------------------------------------
+
 
 def load_sync_state() -> SyncState:
     """Load the last sync timestamp from disk, or return a fresh state."""
@@ -43,6 +44,7 @@ def save_sync_state(state: SyncState) -> None:
 # ---------------------------------------------------------------------------
 # API fetch + validation
 # ---------------------------------------------------------------------------
+
 
 def fetch_matches() -> MatchResponse:
     """Fetch World Cup matches and validate the response with Pydantic.
@@ -80,6 +82,7 @@ def fetch_matches() -> MatchResponse:
 # Incremental filter
 # ---------------------------------------------------------------------------
 
+
 def filter_changed(
     matches: list[Match],
     state: SyncState,
@@ -111,6 +114,7 @@ def filter_changed(
 # Upsert
 # ---------------------------------------------------------------------------
 
+
 def sync_matches(matches: list[Match]) -> int:
     """Upsert validated Match objects into ChromaDB. Returns upsert count."""
     if not matches:
@@ -132,6 +136,7 @@ def sync_matches(matches: list[Match]) -> int:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     import argparse

@@ -4,16 +4,18 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from fetch_wc import filter_changed
-from schemas import Match, SyncState
+from rag_chromadb.fetch_wc import filter_changed
+from rag_chromadb.schemas import Match, SyncState
 
 
 def sample_match(match_id: int, last_updated: datetime | None) -> Match:
-    return Match.model_validate({
-        "id": match_id,
-        "status": "FINISHED",
-        "lastUpdated": last_updated,
-    })
+    return Match.model_validate(
+        {
+            "id": match_id,
+            "status": "FINISHED",
+            "lastUpdated": last_updated,
+        }
+    )
 
 
 class TestIncrementalFilter:

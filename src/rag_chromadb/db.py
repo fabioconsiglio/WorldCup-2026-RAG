@@ -12,7 +12,7 @@ from typing import Any
 import chromadb
 from openai import OpenAI
 
-from config import (
+from rag_chromadb.config import (
     CHROMA_DB_PATH,
     DEFAULT_N_RESULTS,
     DEFAULT_TEMPERATURE,
@@ -24,6 +24,7 @@ from config import (
 # ---------------------------------------------------------------------------
 # Lazy-singleton clients (cached so they're created only once)
 # ---------------------------------------------------------------------------
+
 
 @cache
 def get_openai_client() -> OpenAI:
@@ -41,6 +42,7 @@ def get_chroma_client() -> chromadb.PersistentClient:
 # Embeddings
 # ---------------------------------------------------------------------------
 
+
 def get_embedding(text: str, *, model: str = EMBEDDING_MODEL) -> list[float]:
     """Generate an embedding vector for the given text."""
     client = get_openai_client()
@@ -51,6 +53,7 @@ def get_embedding(text: str, *, model: str = EMBEDDING_MODEL) -> list[float]:
 # ---------------------------------------------------------------------------
 # Collection helpers
 # ---------------------------------------------------------------------------
+
 
 def get_collection(name: str) -> chromadb.Collection:
     """Get or create a named ChromaDB collection.
@@ -65,6 +68,7 @@ def get_collection(name: str) -> chromadb.Collection:
 # ---------------------------------------------------------------------------
 # RAG pipeline helpers
 # ---------------------------------------------------------------------------
+
 
 def query_collection(
     collection: chromadb.Collection,
@@ -111,7 +115,7 @@ def generate_answer(
     consume it).  Otherwise the text content is returned as a string.
     Returns ``None`` if something goes wrong.
     """
-    from config import DEFAULT_LLM_MODEL
+    from rag_chromadb.config import DEFAULT_LLM_MODEL
 
     llm_model = model or DEFAULT_LLM_MODEL
     client = get_openai_client()
@@ -134,6 +138,7 @@ def generate_answer(
 # ---------------------------------------------------------------------------
 # Upsert helper
 # ---------------------------------------------------------------------------
+
 
 def upsert_documents(
     collection: chromadb.Collection,

@@ -1,7 +1,11 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "rag-chromadb"
 version = "0.1.0"
-description = "Add your description here"
+description = "Local RAG pipeline — ChromaDB + LM Studio + football-data.org"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -19,6 +23,14 @@ dev = [
     "pytest>=8.0.0",
     "ruff>=0.9.0",
 ]
+
+[project.scripts]
+fetch-wc = "rag_chromadb.fetch_wc:main"
+rag-demo = "rag_chromadb.main:main"
+export-db = "rag_chromadb.export_db:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.ruff]
 target-version = "py312"

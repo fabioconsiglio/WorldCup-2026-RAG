@@ -10,6 +10,7 @@ from pydantic import BaseModel, field_validator
 # Football-data.org API response models
 # ---------------------------------------------------------------------------
 
+
 class Team(BaseModel):
     name: str = "Unknown Team"
 
@@ -136,6 +137,7 @@ class MatchResponse(BaseModel):
 # ---------------------------------------------------------------------------
 # ETL state tracker
 # ---------------------------------------------------------------------------
+
 
 class SyncState(BaseModel):
     """Tracks the last successful sync time for incremental ETL."""

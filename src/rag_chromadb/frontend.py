@@ -4,8 +4,13 @@ from __future__ import annotations
 
 import streamlit as st
 
-from config import DEFAULT_N_RESULTS, WC_COLLECTION
-from db import build_rag_prompt, generate_answer, get_collection, get_embedding
+from rag_chromadb.config import DEFAULT_N_RESULTS, WC_COLLECTION
+from rag_chromadb.db import (
+    build_rag_prompt,
+    generate_answer,
+    get_collection,
+    get_embedding,
+)
 
 # ---------------------------------------------------------------------------
 # Page setup

@@ -20,7 +20,10 @@ def export_collection(
 
     # ponytail: chromadb's GetResult TypedDict is awkward for JSON shaping;
     # treat it as a plain dict so the None/invariance stubs don't get in the way.
-    all_data = cast(dict[str, Any], collection.get(include=["documents", "metadatas", "embeddings"]))
+    all_data = cast(
+        dict[str, Any],
+        collection.get(include=["documents", "metadatas", "embeddings"])
+    )
 
     # Convert embeddings to plain floats for JSON serialization
     safe_embeddings: list[list[float] | None] = []

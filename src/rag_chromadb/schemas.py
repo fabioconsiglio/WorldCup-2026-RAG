@@ -57,13 +57,13 @@ class Match(BaseModel):
     @property
     def home_name(self) -> str:
         if self.homeTeam:
-            return self.homeTeam.name
+            return self.homeTeam.name or "Unknown Team"
         return "Unknown Team"
 
     @property
     def away_name(self) -> str:
         if self.awayTeam:
-            return self.awayTeam.name
+            return self.awayTeam.name or "Unknown Team"
         return "Unknown Team"
 
     @property

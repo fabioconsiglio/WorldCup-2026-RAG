@@ -1,9 +1,3 @@
-"""Centralized configuration for the RAG ChromaDB project.
-
-All settings are loaded from environment variables with sensible defaults
-for a local LM Studio + ChromaDB setup.
-"""
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv

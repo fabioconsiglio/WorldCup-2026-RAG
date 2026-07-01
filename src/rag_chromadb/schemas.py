@@ -12,7 +12,7 @@ from pydantic import BaseModel, field_validator
 
 
 class Team(BaseModel):
-    name: str = "Unknown Team"
+    name: str | None = "Unknown Team"
 
 
 class Score(BaseModel):

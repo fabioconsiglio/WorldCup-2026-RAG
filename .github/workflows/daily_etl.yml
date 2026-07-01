@@ -1,4 +1,4 @@
-name: Daily ETL — World Cup Data Sync
+name: "Daily ETL: World Cup Data Sync"
 
 on:
   schedule:
@@ -9,19 +9,17 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
         with:
+          enable-cache: true
           python-version: "3.12"
-
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ".[dev]"
-
+        run: uv sync --all-extras --dev --frozen
       - name: Run ETL
         env:
           FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
-        run: fetch-wc --full
+        run: uv run fetch-wc --full

@@ -6,6 +6,9 @@ for a local LM Studio + ChromaDB setup.
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ---------------------------------------------------------------------------
 # API / LLM settings (LM Studio local server)
@@ -19,10 +22,18 @@ DEFAULT_LLM_MODEL: str = os.getenv("DEFAULT_LLM_MODEL", "qwen3.5-2b")
 # ---------------------------------------------------------------------------
 # ChromaDB settings
 # ---------------------------------------------------------------------------
-CHROMA_DB_PATH: str = os.getenv(
+# Resolve relative paths against the project root so the DB location is stable
+# regardless of the CWD the app is launched from. (Root cause of empty-query
+# bugs: ./local_db resolved to a different dir per script, splitting data
+# across two databases.)
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_BASE_DB_PATH = os.getenv(
     "CHROMA_DB_PATH",
-    str(Path(__file__).resolve().parent / "local_db"),
+    str(_PROJECT_ROOT / "local_db"),
 )
+CHROMA_DB_PATH: str = str(Path(_BASE_DB_PATH).expanduser())
+if not Path(CHROMA_DB_PATH).is_absolute():
+    CHROMA_DB_PATH = str((_PROJECT_ROOT / CHROMA_DB_PATH).resolve())
 
 # ---------------------------------------------------------------------------
 # Collection names

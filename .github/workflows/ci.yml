@@ -28,7 +28,7 @@ jobs:
           enable-cache: true
           python-version: "3.12"
       - name: Install dependencies
-        run: uv pip install -e ".[dev]"
+        run: uv sync --all-extras --dev
       - name: Run mypy
         run: uv run mypy src/
 
@@ -43,6 +43,6 @@ jobs:
           enable-cache: true
           python-version: "3.12"
       - name: Install dependencies
-        run: uv pip install -e ".[dev]"
+        run: uv sync --all-extras --dev
       - name: Run pytest
         run: uv run pytest -v
